@@ -1,0 +1,117 @@
+<!-- tools/company-name-checker.html -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cek Nama PT | Tools.RekanSukses</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+</head>
+<body>
+  <header class="container">
+    <a href="../index.html" class="logo">
+      <img src="../assets/favicon.ico" alt="Tools.RekanSukses logo">
+      Cek Nama PT
+    </a>
+  </header>
+
+  <div class="container">
+    <h2>Cek Ketersediaan Nama PT</h2>
+    <p style="color:var(--gray); margin-bottom:1.5rem;">
+      Simulasi berdasarkan aturan Kemenkumham RI. 
+      <br><small>ℹ️ Tidak terhubung ke server AHU — hanya simulasi lokal.</small>
+    </p>
+
+    <label for="inputNama">Nama PT Lengkap</label>
+    <input type="text" id="inputNama" placeholder="Contoh: PT Rekan Sukses Indonesia" />
+
+    <label for="inputNamaSingkat">Nama Singkat (Opsional)</label>
+    <input type="text" id="inputNamaSingkat" placeholder="Contoh: RSI" />
+
+    <label for="inputKegiatan">Bidang Usaha / Kegiatan</label>
+    <input type="text" id="inputKegiatan" placeholder="Contoh: Jasa Konsultan Digital" />
+
+    <label for="inputKedudukan">Kedudukan (Domisili)</label>
+    <input type="text" id="inputKedudukan" placeholder="Contoh: Jakarta Selatan" />
+
+    <div style="display:flex; align-items:center; gap:10px; margin:1rem 0;">
+      <input type="checkbox" id="agree-warning" />
+      <label for="agree-warning" style="display:inline; margin:0;">
+        Saya telah membaca peringatan tersebut dan akan mengisi data permohonan dengan benar.
+      </label>
+    </div>
+
+    <button class="btn" id="order-name">Periksa Ketersediaan Nama</button>
+
+    <div class="result-box" id="pt-result" style="display:none;"></div>
+  </div>
+
+  <script>
+    document.getElementById('order-name').addEventListener('click', function() {
+      const nama = document.getElementById('inputNama').value.trim();
+      const singkat = document.getElementById('inputNamaSingkat').value.trim();
+      const kegiatan = document.getElementById('inputKegiatan').value.trim();
+      const kedudukan = document.getElementById('inputKedudukan').value.trim();
+      const agreed = document.getElementById('agree-warning').checked;
+
+      const resultBox = document.getElementById('pt-result');
+      resultBox.style.display = 'block';
+
+      if (!agreed) {
+        resultBox.className = 'result-box result-error';
+        resultBox.innerHTML = '⚠️ Anda harus centang pernyataan persetujuan di atas!';
+        return;
+      }
+
+      if (!nama) {
+        resultBox.className = 'result-box result-error';
+        resultBox.innerHTML = '❌ Nama PT lengkap wajib diisi.';
+        return;
+      }
+
+      if (!/^PT\s/i.test(nama)) {
+        resultBox.className = 'result-box result-error';
+        resultBox.innerHTML = '❌ Nama PT harus diawali dengan "PT " (spasi setelah PT).<br>Contoh: PT Rekan Sukses Digital';
+        return;
+      }
+
+      if (nama.length < 10) {
+        resultBox.className = 'result-box result-error';
+        resultBox.innerHTML = '❌ Nama PT terlalu pendek. Minimal 10 karakter.';
+        return;
+      }
+
+      if (/[^a-zA-Z0-9\s]/.test(nama)) {
+        resultBox.className = 'result-box result-error';
+        resultBox.innerHTML = '❌ Nama PT hanya boleh berisi huruf, angka, dan spasi.';
+        return;
+      }
+
+      const commonWords = ['sukses', 'indonesia', 'global', 'digital', 'solusi', 'mandiri', 'jaya', 'utama'];
+      const isGeneric = commonWords.some(word => nama.toLowerCase().includes(word));
+      
+      if (isGeneric && Math.random() > 0.4) {
+        resultBox.className = 'result-box result-error';
+        resultBox.innerHTML = `
+          ❌ Nama "${nama}" <strong>tidak disetujui</strong>.<br>
+          Alasan: Terlalu umum atau sudah digunakan.<br>
+          Saran: Tambahkan kata unik seperti lokasi, tahun, atau inisial founder.
+        `;
+      } else {
+        resultBox.className = 'result-box result-success';
+        resultBox.innerHTML = `
+          ✅ Nama "${nama}" <strong>disetujui</strong>!<br>
+          Ringkasan:<br>
+          • Nama Lengkap: ${nama}<br>
+          • Nama Singkat: ${singkat || '-'}<br>
+          • Kegiatan: ${kegiatan || '-'}<br>
+          • Kedudukan: ${kedudukan || '-'}<br><br>
+          ℹ️ Untuk pengajuan resmi, kunjungi <a href="https://ahu.go.id/sabh/perseroan/pesannama" target="_blank">AHU.go.id</a>.
+        `;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Compressor</title>
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #f9f9f9; padding: 40px; text-align: center; }
+        .card { background: white; padding: 40px; border-radius: 15px; max-width: 500px; margin: auto; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        button { background: #b91d83; color: white; border: none; padding: 15px; width: 100%; border-radius: 50px; cursor: pointer; font-weight: 600; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Image Compressor</h2>
+        <p>Max 1MB for OSS/AHU</p>
+        <input type="file" id="img" accept="image/*">
+        <button onclick="compress()">Compress Now</button>
+        <a id="dl" style="display:none; margin-top:15px; color:#b91d83;">Download</a>
+        <a href="/" style="display:block; margin-top:20px; color:#666; text-decoration:none;">Kembali</a>
+    </div>
+    <script>
+        async function compress() {
+            const file = document.getElementById('img').files[0];
+            const opts = { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true };
+            const comp = await imageCompression(file, opts);
+            const dl = document.getElementById('dl');
+            dl.href = URL.createObjectURL(comp);
+            dl.download = "compressed-"+file.name;
+            dl.style.display = "block";
+            dl.innerText = "Download Result";
+        }
+    </script>
+</body>
+</html>

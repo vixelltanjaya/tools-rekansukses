@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rekan Sukses - Legal Tools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #b91d83; --accent: #f8b65e; --bg: #f9f9f9; }
+        body { font-family: 'Poppins', sans-serif; margin: 0; background: var(--bg); color: #333; }
+        .header { background: white; padding: 20px 50px; display: flex; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .logo { font-weight: 700; font-size: 24px; color: #333; }
+        .logo span { color: var(--primary); }
+        .hero { text-align: center; padding: 60px 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; border-top: 5px solid transparent; text-align: center; }
+        .card:hover { transform: translateY(-5px); border-top: 5px solid var(--primary); }
+        .icon { font-size: 40px; color: var(--accent); margin-bottom: 20px; }
+        .btn { display: inline-block; text-decoration: none; background: var(--primary); color: white; padding: 10px 25px; border-radius: 50px; margin-top: 15px; }
+        .btn:hover { background: #96166a; }
+    </style>
+</head>
+<body>
+    <nav class="header">
+        <div class="logo">Rekan <span>Sukses</span> Tools</div>
+        <a href="https://rekansukses.com" style="text-decoration:none; color:#666;">Back to Main Site</a>
+    </nav>
+    <div class="hero">
+        <h1>Legal & Business Toolkit</h1>
+        <p>Alat bantu gratis untuk kebutuhan legalitas dan bisnis Anda.</p>
+    </div>
+    <div class="grid">
+        <div class="card">
+            <div class="icon"><i class="fas fa-qrcode"></i></div>
+            <h3>QR Generator</h3>
+            <p>Buat QR code dengan logo.</p>
+            <a href="/qr-generator" class="btn">Gunakan</a>
+        </div>
+        <div class="card">
+            <div class="icon"><i class="fas fa-image"></i></div>
+            <h3>Image Compressor</h3>
+            <p>Kecilkan foto untuk OSS.</p>
+            <a href="/image-compressor" class="btn">Gunakan</a>
+        </div>
+        <div class="card">
+            <div class="icon"><i class="fas fa-file-pdf"></i></div>
+            <h3>Merge PDF</h3>
+            <p>Gabung Akta & SK.</p>
+            <a href="/merge-pdf" class="btn">Gunakan</a>
+        </div>
+        <div class="card">
+            <div class="icon"><i class="fas fa-search"></i></div>
+            <h3>Cek Nama PT</h3>
+            <p>Simulator Cek Nama AHU.</p>
+            <a href="/cek-nama" class="btn">Gunakan</a>
+        </div>
+    </div>
+</body>
+</html>

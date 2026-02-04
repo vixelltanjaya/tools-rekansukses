@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Merge PDF</title>
+    <script src="https://unpkg.com/pdf-lib@1.4.0/dist/pdf-lib.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #f9f9f9; padding: 40px; text-align: center; }
+        .card { background: white; padding: 40px; border-radius: 15px; max-width: 500px; margin: auto; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        button { background: #f8b65e; color: white; border: none; padding: 15px; width: 100%; border-radius: 50px; cursor: pointer; font-weight: 600; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Merge PDF</h2>
+        <input type="file" id="files" multiple accept="application/pdf">
+        <button onclick="merge()">Gabungkan PDF</button>
+        <a href="/" style="display:block; margin-top:20px; color:#666; text-decoration:none;">Kembali</a>
+    </div>
+    <script>
+        const { PDFDocument } = PDFLib;
+        async function merge() {
+            const files = document.getElementById('files').files;
+            const mPdf = await PDFDocument.create();
+            for(let f of files) {
+                const pdf = await PDFDocument.load(await f.arrayBuffer());
+                (await mPdf.copyPages(pdf, pdf.getPageIndices())).forEach(p=>mPdf.addPage(p));
+            }
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(new Blob([await mPdf.save()], {type:"application/pdf"}));
+            link.download = "merged.pdf";
+            link.click();
+        }
+    </script>
+</body>
+</html>

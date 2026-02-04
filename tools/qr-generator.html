@@ -1,0 +1,75 @@
+<!-- tools/qr-generator.html -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QR Generator | Tools.RekanSukses</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+</head>
+<body>
+  <header class="container">
+    <a href="../index.html" class="logo">
+      <img src="../assets/favicon.ico" alt="Tools.RekanSukses logo">
+      QR Generator
+    </a>
+  </header>
+
+  <div class="container">
+    <h2>Buat QR Code</h2>
+    <label for="qr-input">Masukkan teks atau URL</label>
+    <input type="text" id="qr-input" placeholder="https://rekansukses.com" value="https://rekansukses.com" />
+    <button class="btn" onclick="generateQR()">Generate QR</button>
+    
+    <div class="qr-preview"><div id="qrcode"></div></div>
+    
+    <button class="btn btn-outline" onclick="downloadQR()">Download PNG</button>
+  </div>
+
+  <script>
+    function generateQR() {
+      const text = document.getElementById('qr-input').value.trim();
+      const container = document.getElementById('qrcode');
+      if (!text) {
+        container.innerHTML = '<p style="color:#999;">Masukkan teks/URL.</p>';
+        return;
+      }
+      const qr = qrcode(0, 'M');
+      qr.addData(text);
+      qr.make();
+      container.innerHTML = qr.createTableTag(4);
+    }
+
+    function downloadQR() {
+      const table = document.querySelector('#qrcode table');
+      if (!table) return;
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const rows = table.querySelectorAll('tr');
+      const cellSize = 4;
+      const size = rows.length * cellSize;
+      canvas.width = size;
+      canvas.height = size;
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, size, size);
+      rows.forEach((row, r) => {
+        const cells = row.querySelectorAll('td');
+        cells.forEach((cell, c) => {
+          if (cell.style.backgroundColor === 'black' || getComputedStyle(cell).backgroundColor === 'rgb(0, 0, 0)') {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
+          }
+        });
+      });
+      const link = document.createElement('a');
+      link.download = 'qr-code.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+    generateQR();
+  </script>
+</body>
+</html>

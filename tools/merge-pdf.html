@@ -1,0 +1,54 @@
+<!-- tools/merge-pdf.html -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gabung PDF | Tools.RekanSukses</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+</head>
+<body>
+  <header class="container">
+    <a href="../index.html" class="logo">
+      <img src="../assets/favicon.ico" alt="Tools.RekanSukses logo">
+      Gabung PDF
+    </a>
+  </header>
+
+  <div class="container">
+    <h2>Gabung Beberapa File PDF</h2>
+    <label for="pdf-files">Pilih minimal 2 file PDF</label>
+    <input type="file" id="pdf-files" accept=".pdf" multiple />
+    <button class="btn" onclick="mergePDFs()">Gabung PDF</button>
+    <div class="output" id="merge-output" style="display:none;"></div>
+  </div>
+
+  <script>
+    async function mergePDFs() {
+      const files = document.getElementById('pdf-files').files;
+      if (files.length < 2) return alert('Pilih minimal 2 file PDF.');
+      
+      const { PDFDocument } = PDFLib;
+      const mergedPdf = await PDFDocument.create();
+      
+      for (const file of files) {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await PDFDocument.load(arrayBuffer);
+        const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+        copiedPages.forEach(page => mergedPdf.addPage(page));
+      }
+      
+      const pdfBytes = await mergedPdf.save();
+      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      
+      const output = document.getElementById('merge-output');
+      output.innerHTML = `<a href="${url}" download="merged.pdf" class="btn">Download PDF Gabungan</a>`;
+      output.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

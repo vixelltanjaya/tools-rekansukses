@@ -1,0 +1,26 @@
+{
+  "name": "tools-rekansukses",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vixelltanjaya/tools-rekansukses.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vixelltanjaya/tools-rekansukses/issues"
+  },
+  "homepage": "https://github.com/vixelltanjaya/tools-rekansukses#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "multer": "^2.0.2",
+    "qrcode": "^1.5.4",
+    "sharp": "^0.34.5"
+  }
+}

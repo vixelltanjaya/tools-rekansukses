@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title>QR Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #f9f9f9; padding: 40px; text-align: center; }
+        .card { background: white; padding: 40px; border-radius: 15px; max-width: 500px; margin: auto; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        input { width: 90%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        button { background: #b91d83; color: white; border: none; padding: 15px; width: 100%; border-radius: 50px; cursor: pointer; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>QR Generator</h2>
+        <input type="text" id="url" placeholder="https://rekansukses.com">
+        <input type="file" id="logo">
+        <button onclick="gen()">Generate</button>
+        <div id="res" style="margin-top:20px;"></div>
+        <a href="/" style="display:block; margin-top:20px; color:#666; text-decoration:none;">Kembali</a>
+    </div>
+    <script>
+        async function gen() {
+            const fd = new FormData();
+            fd.append('url', document.getElementById('url').value);
+            fd.append('logo', document.getElementById('logo').files[0]);
+            const res = await fetch('/api/generate-qr', { method: 'POST', body: fd });
+            if(res.ok) {
+                const b = await res.blob();
+                document.getElementById('res').innerHTML = `<img src="${URL.createObjectURL(b)}" width="200">`;
+            }
+        }
+    </script>
+</body>
+</html>

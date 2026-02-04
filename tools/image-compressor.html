@@ -1,0 +1,76 @@
+<!-- tools/image-compressor.html -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kompres Gambar | Tools.RekanSukses</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+  <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.min.js"></script>
+</head>
+<body>
+  <header class="container">
+    <a href="../index.html" class="logo">
+      <img src="../assets/favicon.ico" alt="Tools.RekanSukses logo">
+      Kompres Gambar
+    </a>
+  </header>
+
+  <div class="container">
+    <h2>Kompres Gambar Online</h2>
+    <label for="image-file">Pilih gambar (JPG/PNG)</label>
+    <input type="file" id="image-file" accept="image/*" />
+    
+    <label for="quality">Kualitas (0–100%)</label>
+    <input type="range" id="quality" min="10" max="100" value="70" />
+    <span id="quality-value">70%</span>
+    
+    <button class="btn" onclick="compressImage()">Kompres Sekarang</button>
+    
+    <div class="output" id="compress-output" style="display:none;"></div>
+  </div>
+
+  <script>
+    document.getElementById('quality').addEventListener('input', e => {
+      document.getElementById('quality-value').textContent = e.target.value + '%';
+    });
+
+    async function compressImage() {
+      const fileInput = document.getElementById('image-file');
+      const file = fileInput.files[0];
+      if (!file) return alert('Pilih gambar terlebih dahulu.');
+      
+      const quality = parseInt(document.getElementById('quality').value) / 100;
+      try {
+        const compressedFile = await imageCompression(file, {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1920,
+          useWebWorker: true,
+          quality: quality
+        });
+        
+        const url = URL.createObjectURL(compressedFile);
+        const output = document.getElementById('compress-output');
+        output.innerHTML = `
+          <p>✅ Berhasil dikompres! Ukuran: ${formatBytes(compressedFile.size)}</p>
+          <a href="${url}" download="compressed-${file.name}" class="btn">Download Gambar</a>
+        `;
+        output.style.display = 'block';
+      } catch (error) {
+        alert('Gagal mengompres: ' + error.message);
+      }
+    }
+
+    function formatBytes(bytes, decimals = 2) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const dm = decimals < 0 ? 0 : decimals;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
+  </script>
+</body>
+</html>
